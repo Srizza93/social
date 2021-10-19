@@ -1,6 +1,8 @@
 <template>
   <div class="navbar">
-    <img class="logo" :src="getImgUrl(logo.path)" :alt="logo.name" />
+    <a :href="logo.link">
+      <img class="logo" :src="getImgUrl(logo.path)" :alt="logo.name" />
+    </a>
     <search />
     <icons />
   </div>
@@ -19,6 +21,7 @@ export default {
         id: 1,
         name: "logo",
         path: "social-logo.png",
+        link: "./index.html",
       },
     };
   },
@@ -42,5 +45,6 @@ export default {
 .logo {
   width: 50px;
   height: 50px;
+  cursor: pointer;
 }
 </style>

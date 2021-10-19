@@ -1,20 +1,47 @@
 <template>
   <div class="icons-root">
     <div class="icons-container" v-for="icon in icons" :key="icon.id">
-      <img
-        class="icons-container_icon"
-        :src="getImgUrl(icon.path)"
-        :alt="icon.name"
-        @click="toggleDropdown"
-      />
-      <div class="icons-container_dropdown-container" v-if="icon.list">
+      <div class="icons-container_img-container">
+        <img
+          class="icons-container_img-container_icon"
+          :src="getImgUrl(icon.path)"
+          :alt="icon.name"
+          @click="toggleDropdown"
+          tabindex="0"
+        />
+        <span
+          class="icons-container_img-container_items-length-container"
+          v-if="icon.list && icon.list.length && icon.name !== 'avatar'"
+        >
+          {{ icon.list.length }}
+        </span>
+      </div>
+      <div
+        class="icons-container_dropdown-container"
+        v-if="icon.list && icon.list.length"
+      >
         <ul class="icons-container_dropdown-container_ul">
           <li
             class="icons-container_dropdown-container_ul_item"
             v-for="item in icon.list"
             :key="icon.name + item.id"
+            :pkey="icon.id"
           >
-            {{ item.text }}
+            <a
+              class="icons-container_dropdown-container_ul_item_link"
+              href="./index.html"
+              >{{ item.text }}</a
+            >
+            <div
+              class="icons-container_dropdown-container_ul_item_interspace"
+              v-if="icon.name !== 'avatar'"
+            ></div>
+            <span
+              class="icons-container_dropdown-container_ul_item_close"
+              v-if="icon.name !== 'avatar'"
+              @click="deleteItem"
+              >x</span
+            >
           </li>
         </ul>
       </div>
@@ -89,28 +116,71 @@ export default {
       ],
     };
   },
+  mounted() {
+    document.addEventListener("click", this.eventDelegation);
+  },
   methods: {
     getImgUrl(pic) {
       const images = require.context("../../images/", false, /\.png$/);
       return images("./" + pic);
     },
+    eventDelegation(e) {
+      const clicked = e.target;
+      if (
+        (clicked.classList.contains("icons-container_img-container_icon") &&
+          clicked.alt !== "home") ||
+        clicked.classList.contains(
+          "icons-container_dropdown-container_ul_item_close"
+        )
+      ) {
+        return;
+      }
+      this.closeDropdown();
+    },
     toggleDropdown(e) {
-      const icon = e.target.alt;
-      const self = this;
-      let dropdown = Array.from(e.target.parentElement.children).find(
-        (element) =>
-          element.classList.contains("icons-container_dropdown-container")
+      let dropdown = Array.from(
+        e.target.parentElement.parentElement.children
+      ).find((element) =>
+        element.classList.contains("icons-container_dropdown-container")
       );
       if (!dropdown) {
         return;
       }
-      document.addEventListener("click", function(e) {
-        self.dropdownBlur(e, icon);
-      }, false);
+      const openDropdowns = document.querySelector(".show-dropdown");
       dropdown.classList.toggle("show-dropdown");
+      if (openDropdowns) {
+        openDropdowns.classList.remove("show-dropdown");
+      }
     },
-    dropdownBlur(e, icon) {
-      console.log(e.target, icon);
+    closeDropdown() {
+      const dropdown = document.querySelector(".show-dropdown");
+      if (dropdown) {
+        dropdown.classList.remove("show-dropdown");
+      }
+    },
+    deleteItem(e) {
+      const clickedItem = Array.from(e.target.parentElement.children).find(
+        (element) =>
+          element.classList.contains(
+            "icons-container_dropdown-container_ul_item_link"
+          )
+      );
+      this.icons = this.icons.map((icon) => {
+        return {
+          id: icon.id,
+          name: icon.name,
+          path: icon.path,
+          list: this.iconHasList(icon.list, clickedItem),
+        };
+      });
+    },
+    iconHasList(list, target) {
+      if (!list) {
+        return;
+      }
+      return list.filter((item) => {
+        return item.text !== target.textContent;
+      });
     },
   },
 };
@@ -122,16 +192,37 @@ export default {
   flex-direction: row;
   align-items: center;
   margin-left: auto;
+  font-size: 16px;
 }
 .icons-container {
   margin: 0 5px;
-  cursor: pointer;
 }
-.icons-container_icon {
+.icons-container_img-container {
+  position: relative;
+}
+.icons-container_img-container_icon {
   width: 35px;
   height: auto;
+  cursor: pointer;
 }
-.icons-container_icon:hover {
+.icons-container_img-container_items-length-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 5px;
+  left: 30px;
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  border-radius: 50%;
+  background-color: red;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+}
+.icons-container_img-container_icon:hover {
   opacity: 0.7;
 }
 .icons-container_dropdown-container {
@@ -140,7 +231,6 @@ export default {
   top: 80px;
   right: 25px;
   width: max-content;
-  background-color: white;
   border: 2px solid #3b5998;
 }
 .show-dropdown {
@@ -150,7 +240,24 @@ export default {
   padding: 10px;
 }
 .icons-container_dropdown-container_ul_item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   list-style: none;
   padding: 5px;
+}
+.icons-container_dropdown-container_ul_item_link {
+  text-decoration: none;
+  color: black;
+}
+.icons-container_dropdown-container_ul_item_link:hover {
+  text-decoration: underline;
+}
+.icons-container_dropdown-container_ul_item_interspace {
+  width: 20px;
+}
+.icons-container_dropdown-container_ul_item_close {
+  margin-left: auto;
+  cursor: pointer;
 }
 </style>

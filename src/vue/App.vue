@@ -1,13 +1,17 @@
 <template>
-  <navbar />
+  <div class="sub-root">
+    <navbar />
+    <content-container />
+  </div>
 </template>
 
 <script>
-import navbar from "./components/NavBar.vue";
+import Navbar from "./components/NavBar.vue";
+import ContentContainer from "./components/ContentContainer.vue";
 
 export default {
   name: "App",
-  components: { navbar }
+  components: { Navbar, ContentContainer },
 };
 </script>
 
