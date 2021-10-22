@@ -38,7 +38,9 @@ export default {
 .navbar {
   display: flex;
   flex-direction: row;
+  position: fixed;
   width: 100%;
+  height: 65px;
   padding: 5px;
   background-color: #3b5998;
 }

@@ -231,6 +231,7 @@ export default {
   top: 80px;
   right: 25px;
   width: max-content;
+  background-color: white;
   border: 2px solid #3b5998;
 }
 .show-dropdown {

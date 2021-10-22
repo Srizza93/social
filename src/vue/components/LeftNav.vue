@@ -107,7 +107,14 @@ export default {
 .left-nav-container {
   display: flex;
   flex-direction: column;
+  width: 180px;
   padding: 20px 10px;
+  top: 65px;
+  bottom: 0;
+  position: fixed;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: white;
 }
 .item-container {
   background-color: white;
