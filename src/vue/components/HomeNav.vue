@@ -1,7 +1,7 @@
 <template>
   <div class="home-nav-container">
-    <div class="posts" v-for="post in usersData[1].data" :key="post.id">
-      <h3>{{ getUserName(post.userId) }}</h3>
+    <div class="posts" v-for="post in getHomePosts" :key="post.id">
+      <h3>{{ post.author }}</h3>
       <p class="posts_name">{{ post.body }}</p>
     </div>
   </div>
@@ -12,41 +12,29 @@ import "regenerator-runtime/runtime";
 
 export default {
   name: "HomeNav",
-  data() {
-    return {
-      usersData: [
-        { id: 1, name: "users", data: undefined },
-        { id: 2, name: "posts", data: undefined },
-        { id: 3, name: "albums", data: undefined },
-        { id: 4, name: "photos", data: undefined },
-        { id: 5, name: "comments", data: undefined },
-      ],
-    };
-  },
-  mounted() {
-    this.xtmlHttpRequestMovies();
-  },
   methods: {
-    xtmlHttpRequestMovies() {
-      const id = "616ff6d312a7d26bd78a9b2a";
-      const self = this;
-      this.usersData.forEach(async (data, i) => {
-        let xhttp = new XMLHttpRequest();
-        let url = `https://jsonplaceholder.typicode.com/${data.name}`;
-        xhttp.open("GET", url, true);
-        xhttp.onreadystatechange = function () {
-          if (this.readyState == 4 && this.status == 200) {
-            self.usersData[i].data = JSON.parse(xhttp.response);
-          }
-        };
-        xhttp.send(null);
-      });
+    async apiCall() {
+      try {
+        const lists = ["users", "posts", "albums", "photos", "comments"];
+        lists.forEach(async (item) => {
+          const url = `https://jsonplaceholder.typicode.com/${item}`;
+          let response = await fetch(url);
+          const data = await response.json();
+          data.label = item;
+          this.$store.dispatch("updateAsyncUsersData", data);
+        });
+      } catch (error) {
+        console.log("Can't get data from API: " + error);
+      }
     },
-    getUserName(postId) {
-      return Array.from(this.usersData[0].data).find(
-        (user) => user.id === postId
-      ).name;
+  },
+  computed: {
+    getHomePosts() {
+      return this.$store.getters.postsWithUsers;
     },
+  },
+  created() {
+    this.apiCall();
   },
 };
 </script>
