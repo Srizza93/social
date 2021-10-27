@@ -24,21 +24,39 @@ export default createStore({
   getters: {
     postsWithUsers(state) {
       return state.usersData.posts.data
-        .map((post) => {
+        .map((post, index) => {
+          const authorData = state.usersData.users.data.find(
+            (user) => user.id === post.userId
+          );
+          const urlData = state.usersData.photos.data[index];
+          const titleData = state.usersData.photos.data[index];
           return {
             id: post.id,
-            author: state.usersData.users.data.find((user) => {
-              return user.id === post.userId;
-            }).name,
+            author: authorData ? authorData.name : "",
+            image: urlData ? urlData.url : "",
+            alt: titleData ? titleData.title : "",
             body: post.body,
           };
         })
         .sort(() => 0.5 - Math.random());
     },
+    contacts(state) {
+      return state.usersData.users.data;
+    },
   },
   actions: {
-    updateAsyncUsersData({ commit }, data) {
-      commit("updateUsersData", data);
+    async apiCall({ commit }, item) {
+      try {
+        const url = `https://jsonplaceholder.typicode.com/${item}`;
+        return fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            data.label = item;
+            commit("updateUsersData", data);
+          });
+      } catch (error) {
+        console.log("Can't get data from API: " + error);
+      }
     },
   },
 });
