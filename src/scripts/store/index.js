@@ -30,12 +30,16 @@ export default createStore({
           );
           const urlData = state.usersData.photos.data[index];
           const titleData = state.usersData.photos.data[index];
+          const commentsData = state.usersData.comments.data.filter(
+            (comment) => comment.postId === post.id
+          );
           return {
             id: post.id,
             author: authorData ? authorData.name : "",
             image: urlData ? urlData.url : "",
             alt: titleData ? titleData.title : "",
             body: post.body,
+            comments: commentsData,
           };
         })
         .sort(() => 0.5 - Math.random());

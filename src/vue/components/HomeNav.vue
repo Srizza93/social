@@ -4,7 +4,19 @@
       <span class="posts_author">{{ post.author }}</span>
       <p class="posts_body">{{ post.body }}</p>
       <img class="posts_image" :src="post.image" :alt="post.alt" />
-      <span class="posts_comments">Comments</span>
+      <span class="posts_comments" @click="toggleComments"
+        >{{ post.comments.length }} Comments</span
+      >
+      <div class="posts_comments_comments-list">
+        <div
+          class="posts_comments_comments-list_comment"
+          v-for="comment in post.comments"
+          :key="comment.id"
+        >
+          <h4>{{ getUserFromEmail(comment.email) }}</h4>
+          <span>{{ comment.body }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -17,6 +29,17 @@ export default {
   computed: {
     getHomePosts() {
       return this.$store.getters.users;
+    },
+  },
+  methods: {
+    getUserFromEmail(email) {
+      return email.substring(0, email.indexOf("@")).replace(/[.]|[_]/, " ");
+    },
+    toggleComments(event) {
+      const list = Array.from(event.target.parentElement.children).find(
+        (element) => element.classList.contains("posts_comments_comments-list")
+      );
+      list.classList.toggle("posts_comments_comments-list-show");
     },
   },
   created() {
@@ -65,5 +88,13 @@ export default {
 }
 .posts_comments:hover {
   text-decoration: underline;
+}
+.posts_comments_comments-list {
+  display: none;
+  flex-direction: column;
+  padding: 10px 20px 20px 20px;
+}
+.posts_comments_comments-list-show {
+  display: flex;
 }
 </style>
