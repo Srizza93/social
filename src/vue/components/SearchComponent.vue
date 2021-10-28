@@ -83,9 +83,9 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 200px;
+  width: 400px;
   padding: 10px;
-  margin-left: 35px;
+  margin-left: auto;
   border-radius: 25px;
   background-color: white;
   cursor: text;

@@ -22,7 +22,7 @@ export default createStore({
     },
   },
   getters: {
-    postsWithUsers(state) {
+    users(state) {
       return state.usersData.posts.data
         .map((post, index) => {
           const authorData = state.usersData.users.data.find(
@@ -41,7 +41,14 @@ export default createStore({
         .sort(() => 0.5 - Math.random());
     },
     contacts(state) {
-      return state.usersData.users.data;
+      return state.usersData.users.data.map((user, index) => {
+        const urlData = state.usersData.photos.data[index];
+        return {
+          id: user.id,
+          name: user.name,
+          image: urlData ? urlData.url : "",
+        };
+      });
     },
   },
   actions: {
