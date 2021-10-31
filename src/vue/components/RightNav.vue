@@ -29,7 +29,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .right-nav-container {
   display: flex;
   flex-direction: column;
@@ -38,6 +38,7 @@ export default {
   top: 65px;
   right: 0;
   bottom: 0;
+  font-size: 15px;
   position: fixed;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -62,5 +63,16 @@ export default {
 }
 .right-nav-container_contacts-container:hover {
   background-color: rgb(0, 0, 0, 0.2);
+}
+@media screen and (max-width: 950px) {
+  .right-nav-container {
+    display: none;
+    top: 110px;
+  }
+  .toggle {
+    display: flex;
+    width: 50%;
+    padding: 0;
+  }
 }
 </style>

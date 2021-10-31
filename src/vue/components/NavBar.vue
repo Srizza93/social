@@ -5,6 +5,13 @@
     </a>
     <search />
     <icons />
+    <div class="hamburger-menu">
+      <img
+        class="hamburger-menu-icon logo"
+        :src="getImgUrl('hamburger-icon.png')"
+        @click="toggleMenu"
+      />
+    </div>
   </div>
 </template>
 
@@ -30,6 +37,16 @@ export default {
       const images = require.context("../../images/", false, /\.png$/);
       return images("./" + pic);
     },
+    toggleMenu(event) {
+      const homeContainer = document.querySelector(".home-nav-container");
+      const leftNav = document.querySelector(".left-nav-container");
+      const rightNav = document.querySelector(".right-nav-container");
+      const iconsRoot = document.querySelector(".icons-root");
+      homeContainer.classList.toggle("toggle-posts");
+      leftNav.classList.toggle("toggle");
+      rightNav.classList.toggle("toggle");
+      iconsRoot.classList.toggle("toggle");
+    },
   },
 };
 </script>
@@ -38,6 +55,8 @@ export default {
 .navbar {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   position: fixed;
   width: 100%;
   height: 65px;
@@ -49,5 +68,18 @@ export default {
   width: 50px;
   height: 50px;
   cursor: pointer;
+}
+.hamburger-menu {
+  display: none;
+  padding: 5px;
+  border-radius: 10px;
+}
+.hamburger-menu:hover {
+  background-color: rgb(0, 0, 0, 0.2);
+}
+@media screen and (max-width: 950px) {
+  .hamburger-menu {
+    display: flex;
+  }
 }
 </style>

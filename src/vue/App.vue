@@ -14,5 +14,3 @@ export default {
   components: { Navbar, ContentContainer },
 };
 </script>
-
-<style></style>

@@ -191,7 +191,6 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: auto;
   font-size: 16px;
 }
 .icons-container {
@@ -232,7 +231,8 @@ export default {
   right: 25px;
   width: max-content;
   background-color: white;
-  border: 2px solid #3b5998;
+  box-shadow: 5px 10px 8px #888888;
+  border-radius: 10px;
 }
 .show-dropdown {
   display: block;
@@ -260,5 +260,21 @@ export default {
 .icons-container_dropdown-container_ul_item_close {
   margin-left: auto;
   cursor: pointer;
+}
+@media screen and (max-width: 950px) {
+  .icons-root {
+    display: none;
+    position: absolute;
+    width: 100%;
+    right: 0;
+    top: 64px;
+    padding: 5px;
+    justify-content: center;
+    background-color: #3b5998;
+  }
+
+  .toggle {
+    display: flex;
+  }
 }
 </style>

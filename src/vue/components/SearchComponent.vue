@@ -78,14 +78,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .search-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 400px;
   padding: 10px;
-  margin-left: auto;
+  margin: 5px;
   border-radius: 25px;
   background-color: white;
   cursor: text;
@@ -116,5 +116,10 @@ input.search-form_input:focus {
 }
 .hide-magnifying {
   width: 0;
+}
+@media (max-width: 1000px) {
+  .search-container {
+    width: 200px;
+  }
 }
 </style>

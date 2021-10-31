@@ -17,9 +17,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .content-container {
   display: flex;
-  flex-direction: row;
 }
 </style>

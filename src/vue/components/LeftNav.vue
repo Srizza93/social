@@ -6,7 +6,11 @@
       :key="item.id"
       :href="item.path"
     >
-      <img class="item-container_image" :src="getImgUrl(item.image)" :alt="item.text" />
+      <img
+        class="item-container_image"
+        :src="getImgUrl(item.image)"
+        :alt="item.text"
+      />
       <span class="item-container_link">
         {{ item.text }}
       </span>
@@ -128,7 +132,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .left-nav-container {
   display: flex;
   flex-direction: column;
@@ -145,8 +149,9 @@ export default {
   flex-direction: row;
   align-items: center;
   padding: 20px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: black;
   text-decoration: none;
@@ -158,5 +163,16 @@ export default {
   width: 35px;
   height: auto;
   margin-right: 10px;
+}
+@media screen and (max-width: 950px) {
+  .left-nav-container {
+    display: none;
+    top: 110px;
+  }
+  .toggle {
+    display: flex;
+    width: 50%;
+    padding: 0;
+  }
 }
 </style>

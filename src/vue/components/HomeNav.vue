@@ -49,17 +49,20 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .home-nav-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  width: 100%;
   margin: 80px auto 40px auto;
 }
 .posts {
   display: flex;
   flex-direction: column;
   max-width: 600px;
+  width: 100%;
   padding: 20px 0;
   margin: 20px 0;
   border-radius: 10px;
@@ -74,6 +77,7 @@ export default {
 .posts_body {
   padding: 10px 20px;
   margin: 0;
+  font-size: 16px;
 }
 .posts_image {
   max-width: 600px;
@@ -96,5 +100,10 @@ export default {
 }
 .posts_comments_comments-list-show {
   display: flex;
+}
+@media screen and (max-width: 950px) {
+  .toggle-posts {
+    display: none;
+  }
 }
 </style>
