@@ -20,29 +20,42 @@ export default createStore({
     updateUsersData(state, data) {
       state.usersData[data.label].data = data;
     },
+    addPost(state, post) {
+      state.usersData.posts.data.unshift(post);
+    },
+    addComment(state, data) {
+      const postId = data[0];
+      const comment = data[1];
+      let postComments = state.usersData.posts.data.find(
+        (post) => post.id === postId
+      );
+      postComments.comments
+        ? postComments.comments.unshift(comment)
+        : (postComments.comments = [comment]);
+    },
   },
   getters: {
-    users(state) {
-      return state.usersData.posts.data
-        .map((post, index) => {
-          const authorData = state.usersData.users.data.find(
-            (user) => user.id === post.userId
-          );
-          const urlData = state.usersData.photos.data[index];
-          const titleData = state.usersData.photos.data[index];
-          const commentsData = state.usersData.comments.data.filter(
-            (comment) => comment.postId === post.id
-          );
-          return {
-            id: post.id,
-            author: authorData ? authorData.name : "",
-            image: urlData ? urlData.url : "",
-            alt: titleData ? titleData.title : "",
-            body: post.body,
-            comments: commentsData,
-          };
-        })
-        .sort(() => 0.5 - Math.random());
+    homePosts(state) {
+      return state.usersData.posts.data.map((post, index) => {
+        const authorData = state.usersData.users.data.find(
+          (user) => user.id === post.userId
+        );
+        const urlData = state.usersData.photos.data[index];
+        const titleData = state.usersData.photos.data[index];
+        let commentsData = state.usersData.comments.data.filter(
+          (comment) => comment.postId === post.id
+        );
+        return {
+          id: post.id,
+          author: authorData ? authorData.name : post.author,
+          image: urlData ? urlData.url : "",
+          alt: titleData ? titleData.title : "",
+          body: post.body,
+          comments: post.comments
+            ? post.comments.concat(commentsData)
+            : commentsData,
+        };
+      });
     },
     contacts(state) {
       return state.usersData.users.data.map((user, index) => {
@@ -63,6 +76,9 @@ export default createStore({
           .then((response) => response.json())
           .then((data) => {
             data.label = item;
+            if (item === "posts") {
+              data.sort(() => 0.5 - Math.random());
+            }
             commit("updateUsersData", data);
           });
       } catch (error) {

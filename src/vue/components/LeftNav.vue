@@ -26,7 +26,7 @@ export default {
       menu: [
         {
           id: 1,
-          text: "Simone",
+          text: "John",
           path: "./index.html",
           image: "avatar-black.png",
         },
