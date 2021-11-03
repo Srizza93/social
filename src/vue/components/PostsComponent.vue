@@ -10,13 +10,23 @@
         Post
       </button>
     </div>
-    <div class="posts" v-for="post in getHomePosts" :key="post.id">
-      <span class="posts_author">{{ post.author }}</span>
+    <div class="posts" v-for="post in posts" :key="post.id">
+      <div class="posts_author-container">
+        <img
+          class="posts_profile-photo"
+          :src="post.image"
+          alt="profile-photo"
+        />
+        <span class="posts_author" @click="openProfile(post.author)">{{
+          post.author
+        }}</span>
+      </div>
       <p class="posts_body">{{ post.body }}</p>
       <img class="posts_image" :src="post.image" :alt="post.alt" />
-      <span class="posts_comments" @click="toggleComments"
-        >{{ post.comments.length }} Comments</span
-      >
+      <span class="posts_comments" @click="toggleComments">
+        <span v-if="post.comments.length">{{ post.comments.length }}</span>
+        Comments
+      </span>
       <div class="posts_comments_comments-list">
         <div class="create-comment">
           <input
@@ -36,8 +46,17 @@
           v-for="comment in post.comments"
           :key="comment.id"
         >
-          <h4>{{ getUserFromEmail(comment.email) }}</h4>
-          <span>{{ comment.body }}</span>
+          <div class="posts_author-container">
+            <img
+              class="posts_profile-photo"
+              :src="post.image"
+              alt="profile-photo"
+            />
+            <span class="posts_author">{{
+              getUserFromEmail(comment.email)
+            }}</span>
+          </div>
+          <p class="posts_comments_comments-list_comment_posts_comment">{{ comment.body }}</p>
         </div>
       </div>
     </div>
@@ -48,10 +67,11 @@
 import "regenerator-runtime/runtime";
 
 export default {
-  name: "HomeNav",
-  computed: {
-    getHomePosts() {
-      return this.$store.getters.homePosts;
+  name: "PostsComponent",
+  props: {
+    posts: {
+      type: Array,
+      required: true,
     },
   },
   methods: {
@@ -67,7 +87,7 @@ export default {
     addPost() {
       const message = document.querySelector(".create-post_input");
       const newPost = {
-        id: this.getHomePosts.length + 1,
+        id: this.$props.posts.length + 1,
         author: "John Doe",
         body: message.value,
         image: "https://via.placeholder.com/600/a77d08",
@@ -85,6 +105,9 @@ export default {
         body: message.value,
       };
       this.$store.commit("addComment", [postId, newComment]);
+    },
+    openProfile(user) {
+      window.open("./profile.html?user=" + encodeURI(user));
     },
   },
   created() {
@@ -130,7 +153,7 @@ export default {
   cursor: pointer;
 }
 .publish_button:hover {
-  opacity: .8;
+  opacity: 0.8;
 }
 .create-post_button {
   background-color: #008009;
@@ -146,10 +169,26 @@ export default {
   box-shadow: 5px 10px 8px #888888;
   background-color: white;
 }
+.posts_author-container {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 20px 0 20px;
+  align-items: center;
+  justify-content: left;
+}
+.posts_profile-photo {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
 .posts_author {
   font-size: 17px;
   font-weight: 600;
   padding: 10px 20px;
+  cursor: pointer;
+}
+.posts_author:hover {
+  text-decoration: underline;
 }
 .posts_body {
   padding: 10px 20px;
@@ -177,6 +216,15 @@ export default {
 }
 .posts_comments_comments-list-show {
   display: flex;
+}
+.posts_comments_comments-list_comment {
+  background-color: #f0f2f5;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+.posts_comments_comments-list_comment_posts_comment {
+  padding: 0 20px 10px 75px;
+  margin: 0;
 }
 .create-comment {
   display: flex;

@@ -11,6 +11,9 @@ module.exports = {
     main: {
       import: path.resolve(__dirname, "./src/scripts/app.js"),
     },
+    profile: {
+      import: path.resolve(__dirname, "./src/scripts/profile.js"),
+    },
   },
   // devtool: 'inline-source-map', // ONLY FOR DEVLOPMENT MODE
   output: {
@@ -53,6 +56,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "social",
       chunks: ["main"],
+    }),
+    new HtmlWebpackPlugin({
+      title: "social",
+      filename: 'profile.html',
+      chunks: ["profile"],
     }),
     new VueLoaderPlugin(),
     new CleanWebpackPlugin(),

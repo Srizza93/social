@@ -67,6 +67,11 @@ export default createStore({
         };
       });
     },
+    searchedUsers(state) {
+      return state.usersData.users.data.filter((user) =>
+        user.name.toLowerCase().includes(state.keyWord.toLowerCase())
+      );
+    },
   },
   actions: {
     async apiCall({ commit }, item) {
