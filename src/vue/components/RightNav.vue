@@ -201,8 +201,8 @@ export default {
   }
   .toggle {
     display: flex;
-    width: 50%;
     padding: 0;
+    left: 50%;
   }
 }
 </style>

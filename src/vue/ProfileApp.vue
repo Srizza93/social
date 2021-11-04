@@ -1,17 +1,25 @@
 <template>
   <div class="sub-root">
     <navbar />
-    <posts-component :posts="getUserPosts" />
+    <photo-component />
+    <div class="content-container">
+      <left-nav />
+      <posts-component :posts="getUserPosts" />
+      <right-nav />
+    </div>
   </div>
 </template>
 
 <script>
 import Navbar from "./components/NavBar.vue";
+import LeftNav from "./components/LeftNav.vue";
 import PostsComponent from "./components/PostsComponent.vue";
+import RightNav from "./components/RightNav.vue";
+import PhotoComponent from "./components/PhotoComponent.vue";
 
 export default {
   name: "App",
-  components: { Navbar, PostsComponent },
+  components: { Navbar, LeftNav, PostsComponent, RightNav, PhotoComponent },
   computed: {
     getUserPosts() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -23,3 +31,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.sub-root {
+  display: flex;
+  flex-direction: column;
+}
+</style>

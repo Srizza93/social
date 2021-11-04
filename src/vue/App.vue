@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style scoped>
+.sub-root {
+  display: flex;
+  flex-direction: column;
+}
 .content-container {
   display: flex;
 }
