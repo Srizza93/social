@@ -33,6 +33,16 @@ export default createStore({
         ? postComments.comments.unshift(comment)
         : (postComments.comments = [comment]);
     },
+    addMessage(state, message) {
+      const author = message[0];
+      const content = message[1];
+      let user = state.usersData.users.data.find(
+        (user) => user.name === author
+      );
+      user.messages
+        ? user.messages.unshift(content)
+        : (user.messages = [content]);
+    },
   },
   getters: {
     homePosts(state) {
@@ -64,6 +74,7 @@ export default createStore({
           id: user.id,
           name: user.name,
           image: urlData ? urlData.url : "",
+          messages: user.messages ? user.messages : [],
         };
       });
     },

@@ -229,7 +229,7 @@ export default {
   position: absolute;
   top: 80px;
   right: 25px;
-  width: max-content;
+  width: auto;
   background-color: white;
   box-shadow: 5px 10px 8px #888888;
   border-radius: 10px;
@@ -243,11 +243,14 @@ export default {
 .icons-container_dropdown-container_ul_item {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   list-style: none;
   padding: 5px;
+  border-bottom: 1px solid #d3d3d3;
 }
 .icons-container_dropdown-container_ul_item_link {
+  padding: 10px;
   text-decoration: none;
   color: black;
 }
@@ -258,8 +261,10 @@ export default {
   width: 20px;
 }
 .icons-container_dropdown-container_ul_item_close {
+  padding: 10px;
   margin-left: auto;
   cursor: pointer;
+  font-size: 20px;
 }
 @media screen and (max-width: 950px) {
   .icons-root {

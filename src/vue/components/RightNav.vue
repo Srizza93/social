@@ -24,10 +24,7 @@
         />
         <span class="chat_name-container_user-name"></span>
         <span
-          class="
-            icons-container_dropdown-container_ul_item_close
-            chat_name-container_close-button
-          "
+          class="icons-container_dropdown-container_ul_item_close"
           @click="closeChat"
           >x</span
         >
@@ -47,6 +44,7 @@
           class="chat_input-container_input"
           type="text"
           placeholder="Type here..."
+          v-model="message"
         />
         <img
           class="chat_input-container_img"
@@ -64,6 +62,8 @@ export default {
   name: "RightNav",
   data() {
     return {
+      user: "",
+      message: "",
       messages: [],
     };
   },
@@ -83,17 +83,30 @@ export default {
       const img = document.querySelector(".chat_img");
       name.innerHTML = userName;
       img.src = userImg;
-      chat.classList.toggle("show-chat");
+      chat.classList.add("show-chat");
+      this.user = name;
+      this.updateMessages();
     },
     closeChat() {
       const chat = document.querySelector(".chat");
       chat.classList.remove("show-chat");
+      this.user = "";
     },
-    sendMessage(event) {
-      const message = document.querySelector(
-        ".chat_input-container_input"
-      ).value;
-      this.messages.push(message);
+    sendMessage() {
+      if (this.message.length === 0) {
+        return;
+      }
+      const author = document.querySelector(
+        ".chat_name-container_user-name"
+      ).innerHTML;
+      this.$store.commit("addMessage", [author, this.message]);
+      this.updateMessages();
+      this.message = "";
+    },
+    updateMessages() {
+      this.messages = this.getContacts.find(
+        (contact) => contact.name === this.user.innerHTML
+      ).messages;
     },
   },
 };
@@ -140,10 +153,11 @@ export default {
   flex-direction: column;
   position: fixed;
   bottom: 0;
-  right: 0;
+  right: 50px;
   width: 200px;
-  height: 250px;
+  height: 300px;
   padding: 10px;
+  box-shadow: 5px 10px 8px #888888;
   border-radius: 10px 0 0 0;
   background-color: white;
 }
@@ -178,8 +192,8 @@ export default {
 }
 .chat_messages {
   display: flex;
-  flex-direction: column;
-  overflow: scroll;
+  flex-direction: column-reverse;
+  overflow: auto;
 }
 .chat_messages_message {
   display: flex;
@@ -189,6 +203,7 @@ export default {
   color: white;
   background-color: rgb(0, 132, 255);
   border-radius: 10px;
+  word-break: break-word;
 }
 .chat_messages_message_me {
   font-size: 13px;
@@ -205,4 +220,10 @@ export default {
     left: 50%;
   }
 }
+@media screen and (max-width: 350px) {
+  .toggle {
+    width: 50%;
+    word-break: break-word;
+  }
+  }
 </style>

@@ -175,4 +175,12 @@ export default {
     left: calc(50% - 180px);
   }
 }
+@media screen and (max-width: 350px) {
+  .toggle {
+    left: 0;
+    width: 50%;
+    word-break: break-all;
+
+  }
+}
 </style>

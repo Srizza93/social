@@ -1,8 +1,8 @@
 <template>
   <div class="sub-root">
     <navbar />
-    <photo-component />
     <div class="content-container">
+      <photo-component />
       <left-nav />
       <posts-component :posts="getUserPosts" />
       <right-nav />
@@ -25,7 +25,7 @@ export default {
       const urlParams = new URLSearchParams(window.location.search);
       const user = urlParams.get("user");
       return this.$store.getters.homePosts.filter(
-        (post) => post.author === user
+        (post) => post.author === user || post.author === "John Doe"
       );
     },
   },

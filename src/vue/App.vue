@@ -23,6 +23,10 @@ export default {
       return this.$store.getters.homePosts;
     },
   },
+  created() {
+    const lists = ["users", "posts", "albums", "photos", "comments"];
+    lists.forEach((list) => this.$store.dispatch("apiCall", list));
+  },
 };
 </script>
 

@@ -61,4 +61,7 @@ export default {
   border: 5px solid white;
   border-radius: 50%;
 }
+.toggle {
+  display: none;
+}
 </style>

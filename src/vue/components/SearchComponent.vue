@@ -178,6 +178,7 @@ input.search-form_input:focus {
   background-color: white;
   box-shadow: 5px 10px 8px #888888;
   overflow: scroll;
+  z-index: 99;
 }
 .show-users-dropdown {
   display: flex;

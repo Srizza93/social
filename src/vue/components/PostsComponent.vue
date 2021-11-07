@@ -5,6 +5,7 @@
         class="create-post_input"
         type="text"
         placeholder="What's on your mind?"
+        v-model="post"
       />
       <button class="publish_button create-post_button" @click="addPost">
         Post
@@ -33,10 +34,11 @@
             class="create-post_input"
             type="text"
             placeholder="Comment something..."
+            v-model="comment"
           />
           <button
             class="publish_button create-comment_button"
-            @click="postComment($event, post.comments, post.id)"
+            @click="postComment(post.comments, post.id)"
           >
             Post
           </button>
@@ -56,7 +58,9 @@
               getUserFromEmail(comment.email)
             }}</span>
           </div>
-          <p class="posts_comments_comments-list_comment_posts_comment">{{ comment.body }}</p>
+          <p class="posts_comments_comments-list_comment_posts_comment">
+            {{ comment.body }}
+          </p>
         </div>
       </div>
     </div>
@@ -68,6 +72,12 @@ import "regenerator-runtime/runtime";
 
 export default {
   name: "PostsComponent",
+  data() {
+    return {
+      post: "",
+      comment: "",
+    };
+  },
   props: {
     posts: {
       type: Array,
@@ -85,34 +95,37 @@ export default {
       list.classList.toggle("posts_comments_comments-list-show");
     },
     addPost() {
-      const message = document.querySelector(".create-post_input");
+      const input = document.querySelector(".create-post_input");
+      if (this.post.length === 0) {
+        input.placeholder = "Write something first...";
+        return;
+      }
       const newPost = {
         id: this.$props.posts.length + 1,
         author: "John Doe",
-        body: message.value,
+        body: this.post,
         image: "https://via.placeholder.com/600/a77d08",
         comments: [],
       };
       this.$store.commit("addPost", newPost);
+      this.post = "";
+      input.placeholder = "What's on your mind?";
     },
-    postComment(event, comments, postId) {
-      const message = Array.from(event.target.parentElement.children).filter(
-        (element) => element.classList.contains("create-post_input")
-      )[0];
+    postComment(comments, postId) {
+      if (this.comment.length === 0) {
+        return;
+      }
       const newComment = {
         id: comments.length + 1,
         email: "John.Doe@gmail.com",
-        body: message.value,
+        body: this.comment,
       };
       this.$store.commit("addComment", [postId, newComment]);
+      this.comment = "";
     },
     openProfile(user) {
       window.open("./profile.html?user=" + encodeURI(user));
     },
-  },
-  created() {
-    const lists = ["users", "posts", "albums", "photos", "comments"];
-    lists.forEach((list) => this.$store.dispatch("apiCall", list));
   },
 };
 </script>
@@ -165,8 +178,8 @@ export default {
   width: 100%;
   padding: 20px 0;
   margin: 20px 0;
+  border: 1px solid #d3d3d3;
   border-radius: 10px;
-  box-shadow: 5px 10px 8px #888888;
   background-color: white;
 }
 .posts_author-container {

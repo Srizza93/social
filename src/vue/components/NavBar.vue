@@ -37,15 +37,19 @@ export default {
       const images = require.context("../../images/", false, /\.png$/);
       return images("./" + pic);
     },
-    toggleMenu(event) {
+    toggleMenu() {
+      const contentContainer = Array.from(
+        document.querySelector(".content-container").children
+      );
       const homeContainer = document.querySelector(".home-nav-container");
-      const leftNav = document.querySelector(".left-nav-container");
-      const rightNav = document.querySelector(".right-nav-container");
       const iconsRoot = document.querySelector(".icons-root");
       homeContainer.classList.toggle("toggle-posts");
-      leftNav.classList.toggle("toggle");
-      rightNav.classList.toggle("toggle");
       iconsRoot.classList.toggle("toggle");
+      contentContainer.forEach((element) =>
+        !element.classList.contains("home-nav-container")
+          ? element.classList.toggle("toggle")
+          : element
+      );
     },
   },
 };
