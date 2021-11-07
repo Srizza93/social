@@ -15,7 +15,7 @@ module.exports = {
       import: path.resolve(__dirname, "./src/scripts/profile.js"),
     },
   },
-  // devtool: 'inline-source-map', // ONLY FOR DEVLOPMENT MODE
+  // devtool: "inline-source-map", // ONLY FOR DEVLOPMENT MODE
   output: {
     filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "deploy"),
@@ -56,11 +56,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "social",
       chunks: ["main"],
+      favicon: "./src/images/social-logo.ico",
     }),
     new HtmlWebpackPlugin({
       title: "social",
-      filename: 'profile.html',
+      filename: "profile.html",
       chunks: ["profile"],
+      favicon: "./src/images/social-logo.ico",
     }),
     new VueLoaderPlugin(),
     new CleanWebpackPlugin(),

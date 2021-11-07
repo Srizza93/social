@@ -12,9 +12,9 @@
         :src="contact.image"
         :alt="contact.name + '-profile-photo'"
       />
-      <span class="right-nav-container_contacts-container_contact">{{
-        contact.name
-      }}</span>
+      <span class="right-nav-container_contacts-container_contact">
+        {{ contact.name }}
+      </span>
     </div>
     <div class="chat">
       <div class="chat_name-container">
@@ -77,14 +77,20 @@ export default {
       const images = require.context("../../images/", false, /\.png$/);
       return images("./" + pic);
     },
+    shortenName(name) {
+      if (name.length < 10) {
+        return name;
+      }
+      return name.substring(0, 10) + "...";
+    },
     openChat(userName, userImg) {
       const chat = document.querySelector(".chat");
       const name = document.querySelector(".chat_name-container_user-name");
       const img = document.querySelector(".chat_img");
-      name.innerHTML = userName;
+      name.innerHTML = this.shortenName(userName);
       img.src = userImg;
+      this.user = userName;
       chat.classList.add("show-chat");
-      this.user = name;
       this.updateMessages();
     },
     closeChat() {
@@ -105,7 +111,7 @@ export default {
     },
     updateMessages() {
       this.messages = this.getContacts.find(
-        (contact) => contact.name === this.user.innerHTML
+        (contact) => contact.name === this.user
       ).messages;
     },
   },
@@ -174,6 +180,7 @@ export default {
   margin-top: auto;
 }
 .chat_input-container_input {
+  width: 100%;
   border: none;
 }
 .chat_input-container_input:focus {
@@ -181,7 +188,7 @@ export default {
 }
 .chat_input-container_img {
   width: 35px;
-  height: 35px;
+  height: auto;
   cursor: pointer;
 }
 .chat_input-container_img:hover {
@@ -225,5 +232,5 @@ export default {
     width: 50%;
     word-break: break-word;
   }
-  }
+}
 </style>
