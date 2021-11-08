@@ -87,9 +87,9 @@ export default {
       const chat = document.querySelector(".chat");
       const name = document.querySelector(".chat_name-container_user-name");
       const img = document.querySelector(".chat_img");
+      this.user = userName;
       name.innerHTML = this.shortenName(userName);
       img.src = userImg;
-      this.user = userName;
       chat.classList.add("show-chat");
       this.updateMessages();
     },
@@ -99,15 +99,22 @@ export default {
       this.user = "";
     },
     sendMessage() {
-      if (this.message.length === 0) {
+      if (this.textIsNotWritten()) {
         return;
       }
-      const author = document.querySelector(
-        ".chat_name-container_user-name"
-      ).innerHTML;
-      this.$store.commit("addMessage", [author, this.message]);
+      this.$store.commit("addMessage", [this.user, this.message]);
       this.updateMessages();
       this.message = "";
+    },
+    textIsNotWritten() {
+      const input = document.querySelector(".chat_input-container_input");
+      if (this.message.trim().length === 0) {
+        input.value = "";
+        input.placeholder = "Write something first...";
+        return true;
+      }
+      input.placeholder = "Type here...";
+      return false;
     },
     updateMessages() {
       this.messages = this.getContacts.find(

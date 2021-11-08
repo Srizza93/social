@@ -31,14 +31,14 @@
       <div class="posts_comments_comments-list">
         <div class="create-comment">
           <input
-            class="create-post_input"
+            class="create-post_input create-comment_input"
             type="text"
-            placeholder="Comment something..."
+            placeholder="What's on your mind?"
             v-model="comment"
           />
           <button
             class="publish_button create-comment_button"
-            @click="postComment(post.comments, post.id)"
+            @click="postComment($event, post.comments, post.id)"
           >
             Post
           </button>
@@ -96,8 +96,7 @@ export default {
     },
     addPost() {
       const input = document.querySelector(".create-post_input");
-      if (this.post.length === 0) {
-        input.placeholder = "Write something first...";
+      if (this.textIsNotWritten(this.post, input)) {
         return;
       }
       const newPost = {
@@ -109,10 +108,12 @@ export default {
       };
       this.$store.commit("addPost", newPost);
       this.post = "";
-      input.placeholder = "What's on your mind?";
     },
-    postComment(comments, postId) {
-      if (this.comment.length === 0) {
+    postComment(event, comments, postId) {
+      const input = Array.from(event.target.parentElement.children).find(
+        (element) => element.classList.contains("create-comment_input")
+      );
+      if (this.textIsNotWritten(this.comment, input)) {
         return;
       }
       const newComment = {
@@ -123,9 +124,23 @@ export default {
       this.$store.commit("addComment", [postId, newComment]);
       this.comment = "";
     },
+    textIsNotWritten(text, input) {
+      const textLength = text.trim().length;
+      if (textLength === 0) {
+        input.value = "";
+        input.placeholder = "Write something first...";
+        return true;
+      }
+      input.placeholder = "What's on your mind?";
+      return false;
+    },
     openProfile(user) {
       window.open("./profile.html?user=" + encodeURI(user));
     },
+  },
+  created() {
+    const lists = ["users", "posts", "albums", "photos", "comments"];
+    lists.forEach((list) => this.$store.dispatch("apiCall", list));
   },
 };
 </script>
@@ -204,7 +219,7 @@ export default {
   text-decoration: underline;
 }
 .posts_body {
-  padding: 10px 20px;
+  padding: 0 20px 0 75px;
   margin: 0;
   font-size: 16px;
 }

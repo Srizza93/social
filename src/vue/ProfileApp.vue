@@ -24,6 +24,7 @@ export default {
     getUserPosts() {
       const urlParams = new URLSearchParams(window.location.search);
       const user = urlParams.get("user");
+        console.log(this.$store);
       return this.$store.getters.homePosts.filter(
         (post) => post.author === user || post.author === "John Doe"
       );
